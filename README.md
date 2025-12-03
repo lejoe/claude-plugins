@@ -21,7 +21,7 @@ Interactive prompt builder for creating high-quality deep research prompts throu
 In Claude Code, run:
 
 ```
-/plugin marketplace add github:lejoe/claude-plugins
+/plugin marketplace add lejoe/claude-plugins
 /plugin install lejoe-agent-skills@lejoe/claude-plugins
 ```
 
