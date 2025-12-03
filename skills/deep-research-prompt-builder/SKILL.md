@@ -23,47 +23,68 @@ When user provides a topic, immediately categorize it:
 
 Ask questions ONE AT A TIME. Wait for response before proceeding.
 
+**Generate questions that directly probe the specific research topic.** Use the category examples below as inspiration, not scripts. Each question should surface something the user hasn't yet specified about their actual topic.
+
+#### Clarification Triggers
+
+Before proceeding with interview questions, clarify when:
+
+- User uses ambiguous or unusual terminology
+- Scope is mentioned but intent is unclear (what specifically matters about it?)
+- User gives compound answers - confirm priority ordering
+- Technical terms may have multiple meanings in context
+
 #### Opening Question (All Categories)
 
 "What specific aspect of [TOPIC] are you most interested in exploring?"
 
-#### Category-Specific Questions
+#### Category-Specific Question Examples
 
-**Product/Service:**
+Use these as **inspiration only** - adapt questions to the actual topic at hand:
 
-- Q2: "Are you looking for: a) current best options, b) specific comparisons, or c) future trends?"
-- Q3: "What criteria matter most? (price, features, availability, demographics)"
-- Q4: "Preferred format: comparison table, ranked list, or detailed analysis?"
+**Product/Service examples:**
 
-**Technical:**
+- Research goal: current best options, specific comparisons, or understanding what makes something good?
+- Key criteria and their priority order
+- Preferred output format
 
-- Q2: "Context: a) learning/exploring, b) implementing in project, or c) architectural decisions?"
-- Q3: "Critical aspects: performance, best practices, pitfalls, or examples?"
-- Q4: "Depth: high-level overview, implementation guide, or comprehensive analysis?"
+**Technical examples:**
 
-**Academic:**
+- Context: learning, implementing, or making architectural decisions?
+- Critical aspects: performance, best practices, pitfalls, examples?
+- Depth needed: overview, implementation guide, or deep analysis?
 
-- Q2: "Purpose: literature review, hypothesis exploration, or current knowledge state?"
-- Q3: "Time scope: last 2 years, 5 years, or comprehensive historical?"
-- Q4: "Evidence level: peer-reviewed only, include preprints, or include industry sources?"
+**Academic examples:**
 
-**Business:**
+- Purpose: literature review, hypothesis exploration, or current knowledge state?
+- Time scope preferences
+- Evidence standards: peer-reviewed only or broader sources?
 
-- Q2: "Focus: market landscape, competitor analysis, or trend identification?"
-- Q3: "Most valuable data: market size, customer insights, positioning, or opportunities?"
-- Q4: "Geographic scope and industry boundaries?"
+**Business examples:**
 
-**General:**
+- Focus: market landscape, competitor analysis, or trends?
+- Most valuable data types
+- Scope boundaries
 
-- Q2: "Driving this research: personal interest, professional need, or educational?"
-- Q3: "Perspective: comprehensive overview, specific angle, or comparative?"
-- Q4: "Any controversies or debates to emphasize?"
+**General examples:**
+
+- What's driving this research?
+- Perspective: comprehensive, specific angle, or comparative?
+- Key debates or controversies to address?
 
 #### Closing Question (All)
 
 "Any specific angle or outcome you haven't mentioned that should shape this research?"
 
 ### 3. Build Enhanced Prompt
+
+#### Prompt Construction Principles
+
+- **Include only what was discussed or directly implied**
+- Do NOT add "enhancements" the user didn't ask about
+- If uncertain whether to include something, leave it out
+- Scope mentions (geographic, temporal, etc.) should reflect user's stated intent, not assumed interests
+- No speculative expansions beyond what user requested
 
 Use this template structure:
 
@@ -202,31 +223,43 @@ For advanced prompting techniques (CoT, self-consistency, role-based framing), s
 
 ## Prompt Enhancement Techniques
 
-Apply these automatically based on responses:
+Apply these **only when directly relevant to what the user discussed**. Do not add enhancements speculatively.
 
-### For Vague Topics
+### For Vague Topics (if user's topic lacks clear boundaries)
 
 Add: "Begin by establishing clear definitions and scope based on authoritative consensus, then proceed with focused analysis."
 
-### For Controversial Topics
+### For Controversial Topics (if user mentions debates or conflicting views)
 
 Add: "Present multiple viewpoints with supporting evidence. Clearly distinguish between consensus, debate, and speculation."
 
-### For Emerging Fields
+### For Emerging Fields (if user is researching something new/rapidly evolving)
 
 Add: "Note the recency of this domain. Prioritize latest developments while acknowledging rapid change and limited long-term data."
 
-### For Comparative Research
+### For Comparative Research (if user explicitly wants comparisons)
 
 Add: "Develop systematic comparison criteria before analysis. Ensure fair, parallel evaluation across all options."
 
-### For Technical Implementation
+### For Technical Implementation (if user needs practical guidance)
 
 Add: "Include practical examples, common gotchas, and real-world considerations beyond theoretical knowledge."
 
+## Pre-Output Confirmation
+
+Before generating the final prompt, briefly confirm:
+
+"Based on our discussion, the prompt will focus on:
+
+- [Primary goal]
+- [Key criteria]
+- [Scope boundaries]
+
+Anything to add or remove before I generate it?"
+
 ## Output Format
 
-Preface final prompt with:
+After confirmation, preface final prompt with:
 "Here's your enhanced research prompt. Copy and use this for comprehensive deep research:"
 
 ```
@@ -243,7 +276,9 @@ Before outputting, verify prompt includes:
 - [ ] Output structure
 - [ ] Reasoning instructions
 - [ ] Quality evaluation criteria
-- [ ] Topic-specific enhancements
+- [ ] Topic-specific enhancements (only if discussed)
+- [ ] Contains ONLY elements discussed or directly requested
+- [ ] No speculative enhancements added
 
 ## Prompt Validation
 
