@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Backup files
+*.bak
+
+# Packaged skills/plugins
+*.zip
+*.skill
+
+# Local plugin settings and cache
+.claude/
+
+# Node modules (if scripts are added)
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
