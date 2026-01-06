@@ -13,7 +13,7 @@
         {
             "name": "lejoe-agent-skills",
             "description": "A personal collection of Claude Code skills",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": "./",
             "author": {
                 "name": "Joel Bez",
@@ -24,7 +24,8 @@
             "strict": false,
             "skills": [
                 "./skills/brainstorm",
-                "./skills/deep-research-prompt-builder"
+                "./skills/deep-research-prompt-builder",
+                "./skills/twitter-thread-extractor"
             ],
             "agents": [
                 "./agents/thinking-partner.md"

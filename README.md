@@ -29,6 +29,24 @@ Interactive prompt builder for creating high-quality deep research prompts throu
 - Enhance existing questions with best practices
 - Create structured prompts for product comparisons, technical docs, academic research, or market analysis
 
+### Twitter Thread Extractor
+
+Extract and format Twitter threads for easy reading and analysis.
+
+**Use when you need to:**
+
+- Extract content from Twitter threads
+- Convert threads to readable markdown format
+- Analyze or save Twitter thread content
+
+## Agents
+
+Agents are autonomous subprocesses that Claude automatically triggers when it detects appropriate scenarios. They handle complex, multi-step tasks independently.
+
+### Thinking Partner
+
+Autonomous agent for collaborative exploration of complex problems through Socratic questioning and active listening.
+
 **Automatically triggered when:**
 
 - You're working through complex problems or decisions
