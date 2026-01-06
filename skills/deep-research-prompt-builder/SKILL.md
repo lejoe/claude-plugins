@@ -21,17 +21,17 @@ When user provides a topic, immediately categorize it:
 
 ### 2. Conduct Adaptive Interview
 
-Ask questions ONE AT A TIME. Wait for response before proceeding.
+Ask questions ONE AT A TIME. Wait for the response before proceeding.
 
-**Generate questions that directly probe the specific research topic.** Use the category examples below as inspiration, not scripts. Each question should surface something the user hasn't yet specified about their actual topic.
+**Generate questions that directly probe the specific research topic.** Use the category examples below as inspiration, not scripts. Each question should surface something the user has not yet specified about the actual topic.
 
 #### Clarification Triggers
 
 Before proceeding with interview questions, clarify when:
 
-- User uses ambiguous or unusual terminology
+- The user uses ambiguous or unusual terminology
 - Scope is mentioned but intent is unclear (what specifically matters about it?)
-- User gives compound answers - confirm priority ordering
+- The user gives compound answers - confirm priority ordering
 - Technical terms may have multiple meanings in context
 
 #### Opening Question (All Categories)
@@ -249,13 +249,13 @@ Add: "Include practical examples, common gotchas, and real-world considerations 
 
 Before generating the final prompt, briefly confirm:
 
-"Based on our discussion, the prompt will focus on:
+"Based on the discussion, the prompt will focus on:
 
 - [Primary goal]
 - [Key criteria]
 - [Scope boundaries]
 
-Anything to add or remove before I generate it?"
+Anything to add or remove before generating it?"
 
 ## Output Format
 
@@ -268,7 +268,7 @@ After confirmation, preface final prompt with:
 
 ## Quality Checklist
 
-Before outputting, verify prompt includes:
+Before outputting, verify the prompt includes:
 
 - [ ] Clear, specific research objective
 - [ ] Defined scope and boundaries
@@ -293,8 +293,8 @@ The validator checks for required sections, recommended elements, and provides a
 ## Interaction Guidelines
 
 - Keep questions concise and clear
-- One question at a time for better UX
-- Skip questions if user provides info upfront
+- One question at a time for better user experience
+- Skip questions if the user provides information upfront
 - Adapt depth based on user expertise signals
-- If conflicting requirements, ask for priority
-- If scope too broad, suggest splitting into multiple research tasks
+- If requirements conflict, ask for priority
+- If scope is too broad, suggest splitting into multiple research tasks
