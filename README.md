@@ -1,8 +1,12 @@
 # Claude Skills Collection
 
-A personal collection of Claude Code skills for enhanced AI-assisted workflows.
+A personal collection of Claude Code skills and autonomous agents for enhanced AI-assisted workflows.
 
-## Skills Included
+## What's Included
+
+This plugin provides both **skills** (user-invoked commands) and **agents** (autonomously triggered for complex tasks).
+
+## Skills
 
 ### Brainstorm
 
@@ -24,6 +28,19 @@ Interactive prompt builder for creating high-quality deep research prompts throu
 - Transform a basic research topic into a comprehensive research prompt
 - Enhance existing questions with best practices
 - Create structured prompts for product comparisons, technical docs, academic research, or market analysis
+
+**Automatically triggered when:**
+
+- You're working through complex problems or decisions
+- You ask for brainstorming or thinking assistance
+- You need help exploring different perspectives
+- You want to organize thoughts around a challenging topic
+
+**Example triggers:**
+
+- "I'm trying to figure out the best approach to restructure our API"
+- "Help me brainstorm ideas for improving team communication"
+- "I'm stuck between two architecture patterns and need to think through the pros and cons"
 
 ## Installation
 
@@ -71,4 +88,3 @@ Once installed, Claude Code will automatically discover and use these skills bas
 
 **Joel Bez**  
 [lejoe.com](https://lejoe.com) · [GitHub](https://github.com/lejoe)
-
