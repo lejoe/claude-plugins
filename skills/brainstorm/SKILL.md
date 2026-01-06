@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Collaborative thinking partner for exploring complex problems through Socratic questioning and active listening. Use when users ask for brainstorming assistance, want to explore ideas, think through challenges, organize thoughts, or need help working through complex problems.
+description: This skill should be used when the user asks to "brainstorm", "help me think through this", "explore ideas", "organize my thoughts", "work through this problem", or mentions needing help with complex thinking, decision-making, problem exploration, or wants a thinking partner for exploring challenges through Socratic questioning.
 ---
 
 # Brainstorm

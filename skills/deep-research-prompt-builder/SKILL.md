@@ -1,6 +1,6 @@
 ---
 name: deep-research-prompt-builder
-description: Interactive prompt builder for creating high-quality deep research prompts through adaptive interviewing. Use when users need to transform a basic research topic into a comprehensive, well-structured research prompt optimized for deep analysis. Helps build research prompts from vague ideas, enhance existing questions with best practices, and create structured prompts for any domain including product comparisons, technical documentation, academic literature, and market analysis.
+description: This skill should be used when the user asks to "build a research prompt", "create a deep research query", "enhance my research question", "structure a research prompt", "help me write a research prompt", or needs help transforming research topics into comprehensive prompts for product comparisons, technical documentation, academic literature, market analysis, or any domain requiring structured deep research.
 ---
 
 # Deep Research Prompt Builder
