@@ -4,6 +4,17 @@ A personal collection of Claude Code skills for enhanced AI-assisted workflows.
 
 ## Skills Included
 
+### Brainstorm
+
+Collaborative thinking partner for exploring complex problems through Socratic questioning and active listening.
+
+**Use when you need to:**
+
+- Brainstorm solutions to complex problems
+- Explore ideas and organize your thoughts
+- Work through challenges using structured dialogue
+- Get help thinking through decisions or trade-offs
+
 ### Deep Research Prompt Builder
 
 Interactive prompt builder for creating high-quality deep research prompts through adaptive interviewing.
@@ -60,3 +71,4 @@ Once installed, Claude Code will automatically discover and use these skills bas
 
 **Joel Bez**  
 [lejoe.com](https://lejoe.com) · [GitHub](https://github.com/lejoe)
+
