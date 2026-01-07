@@ -25,13 +25,29 @@ Ask questions ONE AT A TIME. Wait for the response before proceeding.
 
 **Generate questions that directly probe the specific research topic.** Use the category examples below as inspiration, not scripts. Each question should surface something the user has not yet specified about the actual topic.
 
+#### Using AskUserQuestion (Optional Enhancement)
+
+If the `AskUserQuestion` tool is available, use it to provide a more structured interview experience with clear options. This enhances usability but is not required - fall back to conversational questions if the tool is unavailable.
+
+**When to use AskUserQuestion:**
+- Category-specific questions where there are clear, distinct options
+- Priority ordering questions (when requirements might conflict)
+- Confirmation questions before generating the final prompt
+- Clarifying ambiguous terminology with specific interpretations
+
+**When to use conversational questions:**
+- Open-ended exploration questions
+- Questions that need nuanced, free-form responses
+- Follow-up questions that depend on complex context
+- When the user's answer suggests they need to explain more
+
 #### Clarification Triggers
 
 Before proceeding with interview questions, clarify when:
 
-- The user uses ambiguous or unusual terminology
+- The user uses ambiguous or unusual terminology (use AskUserQuestion with specific interpretation options if available)
 - Scope is mentioned but intent is unclear (what specifically matters about it?)
-- The user gives compound answers - confirm priority ordering
+- The user gives compound answers - confirm priority ordering (use AskUserQuestion with ordered options if available)
 - Technical terms may have multiple meanings in context
 
 #### Opening Question (All Categories)
@@ -48,17 +64,39 @@ Use these as **inspiration only** - adapt questions to the actual topic at hand:
 - Key criteria and their priority order
 - Preferred output format
 
+*Example with AskUserQuestion (if available):*
+- Question: "What's your primary goal for this product research?"
+  - Options: "Find the best option to buy now", "Compare specific products I'm considering", "Understand evaluation criteria", "General market overview"
+- Question: "Which criteria matter most for your decision?"
+  - Options: "Price and value", "Features and capabilities", "Reliability and reviews", "Long-term costs"
+  - multiSelect: true
+
 **Technical examples:**
 
 - Context: learning, implementing, or making architectural decisions?
 - Critical aspects: performance, best practices, pitfalls, examples?
 - Depth needed: overview, implementation guide, or deep analysis?
 
+*Example with AskUserQuestion (if available):*
+- Question: "What's your context for researching this technical topic?"
+  - Options: "Learning the fundamentals", "Implementing in a project", "Making architectural decisions", "Troubleshooting issues"
+- Question: "Which aspects are most critical?"
+  - Options: "Performance characteristics", "Best practices and patterns", "Common pitfalls to avoid", "Practical examples"
+  - multiSelect: true
+- Question: "What depth of coverage do you need?"
+  - Options: "High-level overview", "Implementation-focused guide", "Deep technical analysis", "Comprehensive reference"
+
 **Academic examples:**
 
 - Purpose: literature review, hypothesis exploration, or current knowledge state?
 - Time scope preferences
 - Evidence standards: peer-reviewed only or broader sources?
+
+*Example with AskUserQuestion (if available):*
+- Question: "What's the purpose of this academic research?"
+  - Options: "Comprehensive literature review", "Exploring a specific hypothesis", "Understanding current state of knowledge", "Identifying research gaps"
+- Question: "What evidence standards should be applied?"
+  - Options: "Peer-reviewed only", "Include preprints and working papers", "Include reputable non-academic sources", "Broad sources for comprehensive view"
 
 **Business examples:**
 
@@ -247,15 +285,23 @@ Add: "Include practical examples, common gotchas, and real-world considerations 
 
 ## Pre-Output Confirmation
 
-Before generating the final prompt, briefly confirm:
+Before generating the final prompt, first output a summary of what was discussed:
 
 "Based on the discussion, the prompt will focus on:
 
 - [Primary goal]
 - [Key criteria]
-- [Scope boundaries]
+- [Scope boundaries]"
 
-Anything to add or remove before generating it?"
+**Then, if AskUserQuestion is available:**
+
+Use it to confirm next steps:
+- Question: "Should I proceed with generating the research prompt?"
+  - Options: "Yes, generate it", "Yes, but add/change something first", "Let me review the requirements again"
+
+**If AskUserQuestion is not available:**
+
+Ask conversationally: "Anything to add or remove before generating it?"
 
 ## Output Format
 
@@ -294,7 +340,8 @@ The validator checks for required sections, recommended elements, and provides a
 
 - Keep questions concise and clear
 - One question at a time for better user experience
+- Use AskUserQuestion tool when available for structured choices (enhances UX but is optional)
 - Skip questions if the user provides information upfront
 - Adapt depth based on user expertise signals
-- If requirements conflict, ask for priority
+- If requirements conflict, ask for priority (use AskUserQuestion with ordered options if available)
 - If scope is too broad, suggest splitting into multiple research tasks
