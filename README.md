@@ -39,6 +39,29 @@ Extract and format Twitter threads for easy reading and analysis.
 - Convert threads to readable markdown format
 - Analyze or save Twitter thread content
 
+## Commands
+
+### Spec Interview
+
+Interactive specification writing tool that interviews you about feature requirements and writes detailed specifications.
+
+_Inspired by [Thariq's spec-based workflow](https://x.com/trq212/status/2005315275026260309)._
+
+**Usage:**
+
+```
+/spec-interview [spec-file]
+```
+
+If no file is specified, defaults to `SPEC.md`.
+
+**Use when you need to:**
+
+- Create detailed feature specifications through guided interviews
+- Explore technical implementation details, UI/UX considerations, and trade-offs
+- Convert rough ideas into comprehensive specification documents
+- Document requirements through structured questioning
+
 ## Agents
 
 Agents are autonomous subprocesses that Claude automatically triggers when it detects appropriate scenarios. They handle complex, multi-step tasks independently.
