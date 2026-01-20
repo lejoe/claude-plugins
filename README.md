@@ -82,6 +82,23 @@ Interactive interviewing tool that asks deep, non-obvious questions to understan
 - Get a comprehensive summary of your thoughts after the interview
 - Work within a time constraint using the optional timer
 
+### Kind Feedback
+
+Draft supportive, constructive PR comments using Conventional Comments format and research-backed tone guidelines.
+
+**Usage:**
+
+```
+/kind-feedback [your feedback/concern]
+```
+
+**Use when you need to:**
+
+- Transform raw feedback into supportive PR comments
+- Frame suggestions as questions rather than commands
+- Apply proper labels (suggestion, issue, nitpick, etc.)
+- Get multiple tone variations to choose from
+
 ## Agents
 
 Agents are autonomous subprocesses that Claude automatically triggers when it detects appropriate scenarios. They handle complex, multi-step tasks independently.

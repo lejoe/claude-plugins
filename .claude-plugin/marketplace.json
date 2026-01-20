@@ -32,7 +32,8 @@
             ],
             "commands": [
                 "./commands/spec-interview.md",
-                "./commands/interview.md"
+                "./commands/interview.md",
+                "./commands/kind-feedback.md"
             ]
         }
     ]
