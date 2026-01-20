@@ -62,6 +62,26 @@ If no file is specified, defaults to `SPEC.md`.
 - Convert rough ideas into comprehensive specification documents
 - Document requirements through structured questioning
 
+### Interview
+
+Interactive interviewing tool that asks deep, non-obvious questions to understand your thinking about any topic.
+
+**Usage:**
+
+```
+/interview [topic] [minutes]
+```
+
+- `topic` - The subject to interview you about
+- `minutes` - Optional time limit for the interview
+
+**Use when you need to:**
+
+- Explore your thinking on a complex topic through guided questioning
+- Uncover perspectives, concerns, and considerations through deep questions
+- Get a comprehensive summary of your thoughts after the interview
+- Work within a time constraint using the optional timer
+
 ## Agents
 
 Agents are autonomous subprocesses that Claude automatically triggers when it detects appropriate scenarios. They handle complex, multi-step tasks independently.
