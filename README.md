@@ -29,6 +29,24 @@ Interactive prompt builder for creating high-quality deep research prompts throu
 - Enhance existing questions with best practices
 - Create structured prompts for product comparisons, technical docs, academic research, or market analysis
 
+### CC Sessions Review
+
+Analyze Claude Code session history using compound engineering principles to find workflow improvement opportunities.
+
+**Usage:**
+
+```
+/cc-sessions-review [scope: today|week|month|last-N]
+```
+
+**Use when you need to:**
+
+- Review past sessions for repeated problems or missed automation opportunities
+- Find verification gaps where the agent missed issues the user caught
+- Identify undocumented patterns, procedures, or preferences
+- Detect manual work that could be delegated to the agent
+- Get actionable recommendations with draft CLAUDE.md additions or skill proposals
+
 ### Twitter Thread Extractor
 
 Extract and format Twitter threads for easy reading and analysis.
