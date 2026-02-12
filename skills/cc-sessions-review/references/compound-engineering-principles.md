@@ -64,6 +64,41 @@ Detect instances where the user caught issues the agent could have detected.
 | Missing verification step | Agent didn't check | "Tests fail" after agent wrote code without running tests |
 | Missing workflow | No systematic check | Same type of issue caught by user repeatedly |
 
+### Friction Signals (Track Under Verification Gaps)
+
+Detect friction even when there is no single explicit bug report.
+
+**Correction keyword signals:**
+- "no", "that's wrong", "actually", "doesn't work", "broke", "regression"
+- Count only user turns, not assistant text
+
+**Loop signals:**
+- 5+ turns on the same unresolved topic/issue
+- Repeated "try/fix/retry" cycle without forward progress
+
+**Abandonment signals:**
+- Session ends with unresolved user request
+- User says "never mind", "skip this", "forget it", "let's stop"
+
+**Undo/revert signals:**
+- "undo", "revert", "roll back", "start over"
+- User asks to discard prior changes due to low confidence
+
+### Friction Thresholds
+
+- Correction keywords:
+  - `>=2` in one session: moderate friction
+  - `>=4`: high friction
+- Topic loops:
+  - `>=1` loop of 5+ turns: moderate friction
+  - `>=2` loops: high friction
+- Abandoned threads:
+  - `>=1`: moderate friction
+  - `>=2`: high friction
+- Undo/revert patterns:
+  - `>=1`: moderate friction
+  - `>=2`: high friction
+
 ### Recommendation Types
 - **Immediate:** Suggest granting permissions/tools for the missing capability
 - **Systematic:** If same gap appears 2+ times, suggest creating a verification workflow or hook
@@ -133,7 +168,7 @@ Detect manual work the user does that could be delegated to the agent.
 
 ## 5. Stage Progression
 
-Only flag when there are clear, actionable opportunities to advance.
+Always report stage indicators with evidence. Suggest progression only when the next step is clear and actionable.
 
 ### Compound Engineering Stages
 - **Stage 0:** Manual development without AI
@@ -143,9 +178,10 @@ Only flag when there are clear, actionable opportunities to advance.
 - **Stage 4:** Idea-to-PR automation
 - **Stage 5:** Parallel cloud execution with multiple agents
 
-### When to Suggest
-- Only when 5+ instances of current-stage behavior are visible
-- Only when the next stage has a clear, concrete step
+### Reporting Rules
+- Always show inferred current stage
+- Always include evidence counts (e.g., planning turns, direct implementation turns, review turns)
+- Suggest advancing only when 5+ instances of current-stage behavior are visible and the next step is concrete
 - Frame as opportunity, not criticism
 
 ### Example Suggestions
@@ -157,8 +193,9 @@ Only flag when there are clear, actionable opportunities to advance.
 
 The compound engineering guide recommends spending 80% on planning+review, 20% on work+compound.
 
-### When to Flag
-Only flag significant imbalances. This is guidance, not a strict rule.
+### Reporting Rules
+- Always report planning/work/review/compound turn counts and ratios
+- Flag only significant imbalances. This is guidance, not a strict rule.
 
 ### How to Estimate
 - **Planning turns:** Questions, design discussions, requirement exploration, architecture talk
