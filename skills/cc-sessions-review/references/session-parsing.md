@@ -117,3 +117,22 @@ Some user messages contain system injections (system-reminder tags, system_instr
 - Messages containing `[Request interrupted by user]`
 
 Filter these by checking content does not start with `<system` and is not an interruption marker.
+
+## Per-Session Stats
+
+Use this block in Step 2 to compute the session overview metrics for a single file:
+
+```bash
+SESSION_ID="$(basename "$SESSION_FILE" .jsonl)"
+SESSION_DATE="$(date -r "$SESSION_FILE" '+%Y-%m-%d %H:%M')"
+SIZE_BYTES="$(wc -c < "$SESSION_FILE" | tr -d ' ')"
+SIZE_KB="$(( (SIZE_BYTES + 1023) / 1024 ))"
+USER_TURNS="$(jq -r 'select(.type == "user" and .userType == "external") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
+ASSISTANT_TURNS="$(jq -r 'select(.type == "assistant") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
+TOOL_CALLS="$(jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
+TOOLS_USED="$(jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | .name' "$SESSION_FILE" | sort -u | paste -sd ',' -)"
+```
+
+Recommended defaults:
+- If `TOOLS_USED` is empty, render as `none`.
+- Keep `SIZE_BYTES` for classification logic and display `SIZE_KB` in tables.
