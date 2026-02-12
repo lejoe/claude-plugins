@@ -210,3 +210,12 @@ The compound engineering guide recommends spending 80% on planning+review, 20% o
 
 ### Recommendation
 Frame as: "Consider spending more time on [phase] - sessions with more [planning/review] tend to produce fewer corrections and rework."
+
+## Session Quality Metric Inputs
+
+When producing a 1-10 quality score per session, combine:
+- Friction signals: correction keywords, topic loops, abandoned threads, undo/revert events
+- Compounding indicators: durable outputs (skill/script/hook/doc updates), documented repeated patterns
+- Planning balance: distance from the target planning ratio (80% planning+review guidance)
+
+Use this score as a directional summary, not as a standalone judgment. Always pair it with supporting metrics and evidence.

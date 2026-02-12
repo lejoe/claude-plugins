@@ -5,6 +5,7 @@ argument-hint: "[scope: current|today|week|month|last-N] [--all-projects]"
 disable-model-invocation: true
 allowed-tools: Bash, Read, Glob, Grep, AskUserQuestion
 model: sonnet
+run-as-subagent: true
 ---
 
 # CC Sessions Review
@@ -43,6 +44,10 @@ Run the discovery script with resolved scope:
 bash ./skills/cc-sessions-review/scripts/discover_sessions.sh $SCOPE_ARGS
 ```
 
+Analysis time scales with session count and session size.
+For `week`/`month`/`--all-projects`, prioritize substantial sessions first, then summarize short sessions.
+If scope is large, state the estimated review depth before continuing.
+
 Available scopes: `current`, `today`, `week`, `month`, `last-N` (e.g., `last-5`).
 Use `--all-projects` to include all `~/.claude/projects/*` session directories.
 
@@ -62,17 +67,8 @@ Extract assistant responses with tool usage:
 jq -c 'select(.type == "assistant") | {text: [.message.content[]? | select(.type == "text") | .text] | join("\n"), tools: [.message.content[]? | select(.type == "tool_use") | .name]}' SESSION_FILE
 ```
 
-Extract per-session stats:
-```bash
-SESSION_ID="$(basename "$SESSION_FILE" .jsonl)"
-SESSION_DATE="$(date -r "$SESSION_FILE" '+%Y-%m-%d %H:%M')"
-SIZE_BYTES="$(wc -c < "$SESSION_FILE" | tr -d ' ')"
-SIZE_KB="$(( (SIZE_BYTES + 1023) / 1024 ))"
-USER_TURNS="$(jq -r 'select(.type == "user" and .userType == "external") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
-ASSISTANT_TURNS="$(jq -r 'select(.type == "assistant") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
-TOOL_CALLS="$(jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | 1' "$SESSION_FILE" | wc -l | tr -d ' ')"
-TOOLS_USED="$(jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | .name' "$SESSION_FILE" | sort -u | paste -sd ',' -)"
-```
+Compute per-session stats (ID, date, size, turns, tool calls, tools used) using the commands in:
+- `references/session-parsing.md` → **Per-Session Stats**
 
 Classify each session:
 - **Substantial**: `USER_TURNS > 5` OR `SIZE_BYTES > 51200` (50KB)
@@ -102,7 +98,25 @@ bash ./skills/cc-sessions-review/scripts/extract_used_skills.sh SESSION_FILE
 
 This detects skills invoked via `/skill-name` pattern in user messages. Store the results to check against recommendations in Step 6.
 
-CRITICAL: For large sessions (>500 lines of output), process in chunks. Read the first 200 lines, analyze, then continue. Do not attempt to load entire large sessions into context at once.
+CRITICAL: For large sessions, use this 3-step chunk workflow and synthesize at the end:
+1. Check size:
+```bash
+LINES="$(wc -l < "$SESSION_FILE" | tr -d ' ')"
+echo "Total lines: $LINES"
+```
+2. Chunk with offset windows:
+```bash
+CHUNK=200
+OFFSET=0
+while [ "$OFFSET" -lt "$LINES" ]; do
+  tail -n +"$((OFFSET + 1))" "$SESSION_FILE" | head -n "$CHUNK" > "/tmp/session-${SESSION_ID}-${OFFSET}.jsonl"
+  # analyze each chunk independently before moving on
+  OFFSET=$((OFFSET + CHUNK))
+done
+```
+3. Synthesize:
+- Merge chunk-level findings into one per-session summary.
+- De-duplicate repeated issues across chunks before scoring/recommending.
 
 See `references/session-parsing.md` for full JSONL format details and additional extraction patterns.
 
@@ -171,10 +185,28 @@ Present findings in this order:
 ## Session Overview
 Sessions analyzed: N (Substantial: N | Short: N | Abandoned: N)
 
-| Session ID | Date | User turns | Assistant turns | Tools used | Size | Class |
-|---|---|---:|---:|---|---:|---|
-| ... | ... | ... | ... | ... | ...KB | Substantial |
+| Session ID | Date | User turns | Assistant turns | Tools used | Size | Class | Quality (1-10) |
+|---|---|---:|---:|---|---:|---|---:|
+| ... | ... | ... | ... | ... | ...KB | Substantial | 7.8 |
 ```
+
+Quality score formula (per session, clamp to 1-10):
+```text
+quality = clamp(1, 10,
+  5.0
+  - 0.6 * correction_count
+  - 1.2 * topic_loop_count
+  - 1.0 * abandoned_count
+  - 0.8 * undo_revert_count
+  + 0.9 * compound_actions
+  + 0.5 * documented_patterns
+  - 2.0 * abs(planning_ratio - 0.80)
+)
+```
+Where:
+- `compound_actions` = number of compounding outputs in session (new/updated skill, automation script/hook, durable docs update such as CLAUDE.md).
+- `documented_patterns` = repeated conventions/procedures captured into durable docs during or from the session.
+- `planning_ratio` = `planning_turns / (planning_turns + work_turns + review_turns + compound_turns)` (use `0` if denominator is `0`).
 
 2. **Summary** (always show):
 ```
@@ -292,6 +324,64 @@ Use these output requirements:
 2. Ask timeframe (current/today/week/month/last-N)
 3. Build `SCOPE_ARGS` and run discovery script
 4. Continue with normal parse/analyze/report flow
+
+## Sample Output
+
+```markdown
+## Session Overview
+Sessions analyzed: 4 (Substantial: 2 | Short: 1 | Abandoned: 1)
+
+| Session ID | Date | User turns | Assistant turns | Tools used | Size | Class | Quality (1-10) |
+|---|---|---:|---:|---|---:|---|---:|
+| 84a7e050... | 2026-02-11 14:20 | 18 | 21 | Read,Bash,Edit | 96KB | Substantial | 6.4 |
+| c51b1fd2... | 2026-02-11 09:07 | 7 | 8 | Read,Bash | 33KB | Substantial | 8.1 |
+| 19dd30c0... | 2026-02-10 17:44 | 3 | 3 | Read | 11KB | Short | 7.9 |
+| 33ae8b2e... | 2026-02-10 11:06 | 5 | 4 | Read,Bash | 20KB | Abandoned | 4.8 |
+
+## Session Review: week
+Sessions analyzed: 4 | Turns: 33 user, 36 assistant
+
+### Top Recommendations
+1. Add frontend verification workflow (Playwright screenshot + console check) before marking UI tasks complete.
+2. Capture repeated repository-pattern guidance in CLAUDE.md under "Database Access".
+3. Create a `release-checklist` skill to standardize pre-release checks.
+
+## Detailed Breakdown
+
+### 1. Compounding Patterns (2 findings)
+- Metrics: repeated DB pattern explanation in 3 sessions; same release checks run manually in 2 sessions.
+- Evidence: "Use repository pattern for DB access" repeated across 3 session IDs.
+- Recommendation: document DB rule in CLAUDE.md; automate release checks in a skill.
+
+### 2. Verification Gaps (1 critical finding)
+- Metrics: correction_count=4, topic_loops=1, abandoned=1, undo/revert=1.
+- Evidence: user reported browser regression after implementation with no browser validation step.
+- Recommendation: add verification gate with Playwright MCP and test command checklist.
+
+### Friction Points
+- Corrections: 4 (high), Loops: 1 (moderate), Abandoned: 1 (moderate), Undo/Revert: 1 (moderate).
+- Why it matters: repeated rework suggests missing upfront verification and weak acceptance checks.
+
+### 3. Documentation Gaps (1 finding)
+- Metrics: 2 conventions repeated, 0 captured in docs.
+- Evidence: naming and DB guidance repeated without durable documentation.
+- Recommendation: add CLAUDE.md section with exact conventions.
+
+### 4. Delegatable Work (1 finding)
+- Metrics: manual log parsing done in 2 sessions by user copy/paste.
+- Evidence: user pasted repeated command output instead of delegating.
+- Recommendation: have agent run parsing commands directly and summarize.
+
+### 5. Stage Progression
+- Inferred stage: Stage 2 (agentic tools + close supervision).
+- Evidence: direct implementation requests=9, review turns=3, planning turns=4, compound turns=2.
+- Next-stage indicator: enough repeated flow to pilot a plan-first workflow in similar tasks.
+
+### 6. Planning/Work Balance
+- Turn ratios: Planning 11%, Work 63%, Review 18%, Compound 8%.
+- Assessment: imbalanced toward direct work relative to 80/20 guidance.
+- Recommendation: add a short planning phase and explicit verification checklist before implementation.
+```
 
 ## Additional Resources
 
